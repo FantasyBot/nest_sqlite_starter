@@ -17,6 +17,8 @@ const common_1 = require("@nestjs/common");
 const create_user_dto_1 = require("./dtos/create-user.dto");
 const update_user_dto_1 = require("./dtos/update-user.dto");
 const users_service_1 = require("./users.service");
+const serialize_interceptor_1 = require("../interceptors/serialize.interceptor");
+const user_dto_1 = require("./dtos/user.dto");
 let UsersController = class UsersController {
     constructor(usersService) {
         this.usersService = usersService;
@@ -24,7 +26,8 @@ let UsersController = class UsersController {
     createUser(body) {
         return this.usersService.create(body.email, body.password);
     }
-    async getUser(id) {
+    async findUser(id) {
+        console.log('handler is running');
         const user = await this.usersService.findOne(parseInt(id));
         if (!user)
             throw new common_1.NotFoundException('user not found');
@@ -53,7 +56,7 @@ __decorate([
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
-], UsersController.prototype, "getUser", null);
+], UsersController.prototype, "findUser", null);
 __decorate([
     (0, common_1.Get)(),
     __param(0, (0, common_1.Query)('email')),
@@ -78,6 +81,7 @@ __decorate([
 ], UsersController.prototype, "updateUser", null);
 UsersController = __decorate([
     (0, common_1.Controller)('auth'),
+    (0, serialize_interceptor_1.Serialize)(user_dto_1.UserDto),
     __metadata("design:paramtypes", [users_service_1.UsersService])
 ], UsersController);
 exports.UsersController = UsersController;
