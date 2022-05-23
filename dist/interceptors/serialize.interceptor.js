@@ -13,10 +13,10 @@ class SerializeInterceptor {
         this.dto = dto;
     }
     intercept(context, handler) {
-        console.log('Im running before the handler');
         return handler.handle().pipe((0, operators_1.map)((data) => {
-            console.log('Im running before response is sent out', data);
-            return (0, class_transformer_1.plainToClass)(this.dto, data, { excludeExtraneousValues: true });
+            return (0, class_transformer_1.plainToClass)(this.dto, data, {
+                excludeExtraneousValues: true,
+            });
         }));
     }
 }
